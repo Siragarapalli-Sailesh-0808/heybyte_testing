@@ -70,22 +70,21 @@ const FlipCard = ({ member, index }: { member: TeamMember; index: number }) => {
 
   return (
     <div 
-      className={`relative ${dimension} ${offset} perspective-1000 group cursor-pointer transition-transform duration-500`}
-      onMouseEnter={() => {
-        if (window.matchMedia("(hover: hover)").matches) setIsFlipped(true);
+      className={`relative ${dimension} ${offset} perspective-2000 group cursor-pointer`}
+      onClick={() => {
+        // Toggle only on touch devices
+        if (!window.matchMedia("(hover: hover)").matches) setIsFlipped(!isFlipped);
       }}
-      onMouseLeave={() => {
-        if (window.matchMedia("(hover: hover)").matches) setIsFlipped(false);
-      }}
-      onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
-        className="relative w-full h-full transition-all duration-500 preserve-3d"
+        className="relative w-full h-full preserve-3d"
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        whileHover={{ rotateY: 180 }}
+        transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+        style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front Side: Image */}
-        <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-xl">
+        <div className="absolute inset-0 backface-hidden rounded-[2rem] overflow-hidden shadow-xl">
           <Image
             src={member.image}
             alt={member.name}
@@ -93,7 +92,7 @@ const FlipCard = ({ member, index }: { member: TeamMember; index: number }) => {
             className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
-          <div className="absolute bottom-6 left-6 right-6">
+          <div className="absolute bottom-8 left-8 right-8">
             <h4 className="text-xl font-bold text-white font-display leading-tight">{member.name}</h4>
             <p className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.2em] mt-1 font-display">
               {member.role}
@@ -103,7 +102,7 @@ const FlipCard = ({ member, index }: { member: TeamMember; index: number }) => {
 
         {/* Back Side: Quote */}
         <div
-          className="absolute inset-0 backface-hidden rounded-2xl bg-white shadow-2xl p-8 flex flex-col justify-between border border-gray-100"
+          className="absolute inset-0 backface-hidden rounded-[2rem] bg-white shadow-2xl p-10 flex flex-col justify-between border border-gray-100"
           style={{ transform: 'rotateY(180deg)' }}
         >
           <div>
@@ -131,7 +130,7 @@ export default function AboutTeam() {
   const doubleMembers = [...teamMembers, ...teamMembers]
 
   return (
-    <section className="relative w-full py-20 md:py-28 bg-white overflow-hidden">
+    <section className="relative w-full py-24 md:py-32 bg-white overflow-hidden">
       {/* Header Section */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-8 mb-10 md:mb-16">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12">
@@ -173,7 +172,7 @@ export default function AboutTeam() {
         <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-64 z-10 bg-gradient-to-r from-white via-white/50 to-transparent pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-64 z-10 bg-gradient-to-l from-white via-white/50 to-transparent pointer-events-none" />
 
-        <div className="flex overflow-hidden py-12">
+        <div className="flex overflow-hidden py-24 md:py-32">
           <motion.div 
             className="flex gap-8 px-4"
             animate={{ x: isPaused ? undefined : "-50%" }}
@@ -195,8 +194,8 @@ export default function AboutTeam() {
 
       {/* Custom Styles for 3D */}
       <style jsx global>{`
-        .perspective-1000 {
-          perspective: 1000px;
+        .perspective-2000 {
+          perspective: 2000px;
         }
         .preserve-3d {
           transform-style: preserve-3d;
