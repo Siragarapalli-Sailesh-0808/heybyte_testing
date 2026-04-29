@@ -1,210 +1,216 @@
-const services = [
+'use client'
 
+import React from 'react'
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+
+interface Service {
+  title: string
+  description: string
+  features: string[]
+  technologies: string[]
+  image: string
+  accentColor: string
+}
+
+const services: Service[] = [
   {
     title: 'Cloud Architecture',
-    description:
-      'Design and implement scalable, secure, and cost-effective cloud infrastructure that grows with your business needs and ensures high availability.',
+    description: 'Design and implement scalable, secure, and cost-effective cloud infrastructure that grows with your business needs and ensures high availability.',
     features: [
       'Multi-cloud strategy and migration',
       'Serverless architecture design',
-      'Container orchestration with Kubernetes',
+      'Container orchestration (Kubernetes)',
       'Cloud security and compliance',
-      'Auto-scaling and load balancing',
-      'Disaster recovery planning',
+      'Disaster recovery planning'
     ],
-    technologies: [
-      'AWS',
-      'Azure',
-      'Google Cloud',
-      'Docker',
-      'Kubernetes',
-      'Terraform',
-    ],
-    learnMore: '#',
+    technologies: ['AWS', 'Azure', 'Docker', 'Terraform', 'Kubernetes'],
+    image: '/cloud-service.png',
+    accentColor: 'text-blue-600'
   },
   {
     title: 'Mobile Solutions',
-    description:
-      'Create stunning native and cross-platform mobile applications that deliver exceptional user experiences across iOS and Android devices.',
+    description: 'Create stunning native and cross-platform mobile applications that deliver exceptional user experiences across iOS and Android devices.',
     features: [
-      'Native iOS and Android development',
+      'Native iOS & Android development',
       'Cross-platform React Native apps',
       'Progressive Web Apps (PWA)',
       'Mobile UI/UX design',
-      'App Store optimization',
-      'Push notifications and analytics',
+      'App Store optimization'
     ],
-    technologies: [
-      'React Native',
-      'Swift',
-      'Kotlin',
-      'Flutter',
-      'Firebase',
-      'Expo',
-    ],
-    learnMore: '#',
+    technologies: ['React Native', 'Swift', 'Kotlin', 'Flutter', 'Firebase'],
+    image: '/mobile-service.png',
+    accentColor: 'text-indigo-600'
   },
   {
     title: 'Web Applications',
-    description:
-      'Build modern, responsive web applications with cutting-edge frameworks that provide seamless experiences across all devices and browsers.',
+    description: 'Build modern, responsive web applications with cutting-edge frameworks that provide seamless experiences across all devices and browsers.',
     features: [
       'Single Page Applications (SPA)',
-      'Progressive Web Apps (PWA)',
       'E-commerce platforms',
       'Content Management Systems',
       'Real-time collaboration tools',
-      'API development and integration',
+      'API development and integration'
     ],
-    technologies: [
-      'React',
-      'Next.js',
-      'Vue.js',
-      'Node.js',
-      'GraphQL',
-      'PostgreSQL',
-    ],
-    learnMore: '#',
+    technologies: ['React', 'Next.js', 'Node.js', 'GraphQL', 'PostgreSQL'],
+    image: '/web-service.png',
+    accentColor: 'text-purple-600'
   },
   {
     title: 'DevOps & CI/CD',
-    description:
-      'Streamline your development workflow with automated testing, continuous integration, and deployment pipelines that accelerate time-to-market.',
+    description: 'Streamline your development workflow with automated testing, continuous integration, and deployment pipelines that accelerate time-to-market.',
     features: [
-      'CI/CD pipeline setup and optimization',
+      'CI/CD pipeline optimization',
       'Infrastructure as Code (IaC)',
       'Automated testing frameworks',
       'Monitoring and logging solutions',
-      'Security scanning and compliance',
-      'Performance optimization',
+      'Performance optimization'
     ],
-    technologies: [
-      'Jenkins',
-      'GitLab CI',
-      'GitHub Actions',
-      'Ansible',
-      'Prometheus',
-      'Grafana',
-    ],
-    learnMore: '#',
+    technologies: ['Jenkins', 'GitHub Actions', 'Ansible', 'Prometheus', 'Grafana'],
+    image: '/devops-service.png',
+    accentColor: 'text-pink-600'
   },
   {
     title: 'Technical Consulting',
-    description:
-      'Get expert guidance on technology strategy, architecture decisions, and digital transformation initiatives from our seasoned consultants.',
+    description: 'Get expert guidance on technology strategy, architecture decisions, and digital transformation initiatives from our seasoned consultants.',
     features: [
       'Technology stack evaluation',
-      'Architecture review and optimization',
+      'Architecture review & optimization',
       'Digital transformation roadmap',
       'Technical due diligence',
-      'Team training and mentorship',
-      'Best practices implementation',
+      'Team training and mentorship'
     ],
-    technologies: [
-      'Agile',
-      'Scrum',
-      'TOGAF',
-      'AWS Well-Architected',
-      'ITIL',
-      'SAFe',
-    ],
-    learnMore: '#',
-  },
+    technologies: ['Agile', 'Scrum', 'TOGAF', 'Security Audit', 'Scalability'],
+    image: '/consulting-service.png',
+    accentColor: 'text-rose-600'
+  }
 ]
+
+const ServiceCard = ({ service, index }: { service: Service; index: number }) => {
+  return (
+    <div 
+      className="sticky top-20 md:top-32 w-full mb-12 md:mb-20 last:mb-0 px-4 sm:px-6 lg:px-8 group"
+      style={{ zIndex: index + 1 }}
+    >
+      <div className="bg-white rounded-[2.5rem] md:rounded-[3rem] border border-gray-100 shadow-[0_30px_70px_rgba(0,0,0,0.04)] overflow-hidden min-h-[580px] md:min-h-[650px] flex flex-col md:flex-row transition-all duration-700 hover:shadow-[0_50px_100px_rgba(0,0,0,0.08)]">
+        {/* Visual Panel - Premium Image */}
+        <div className="h-[250px] md:h-auto md:flex-1 relative bg-gray-50 overflow-hidden order-1 md:order-2">
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            className="object-cover scale-105 group-hover:scale-110 transition-transform duration-[2s] ease-out"
+            priority={index < 2}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent md:bg-gradient-to-r md:from-white/20 md:via-transparent md:to-transparent pointer-events-none" />
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-[1.2] p-8 sm:p-12 md:p-16 lg:p-24 flex flex-col justify-center bg-white order-2 md:order-1">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] text-indigo-600 mb-6 md:mb-8 block font-display">
+              Solution 0{index + 1}
+            </span>
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 md:mb-8 font-display tracking-tightest leading-tight">
+              {service.title}
+            </h3>
+            
+            <p className="text-base md:text-xl text-gray-500 mb-8 md:mb-12 leading-relaxed max-w-2xl font-display font-light">
+              {service.description}
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 md:gap-y-4 mb-8 md:mb-12">
+              {service.features.map((feature, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="mt-2 w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
+                  <span className="text-gray-600 font-medium text-xs md:text-sm font-display leading-snug">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-10 md:mb-12">
+              {service.technologies.map((tech, i) => (
+                <span key={i} className="px-3 md:px-5 py-1.5 md:py-2 bg-gray-50 text-gray-500 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider font-display border border-gray-100/50 group-hover:border-indigo-100 transition-colors">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-auto">
+              <a 
+                href="/contact" 
+                className="inline-flex items-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gray-900 text-white rounded-2xl font-bold text-sm md:text-lg hover:bg-indigo-600 transition-all duration-500 group font-display shadow-xl hover:shadow-indigo-500/20 w-full sm:w-auto justify-center sm:justify-start"
+              >
+                Start Project
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-1.5" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+import { ArrowRight } from 'lucide-react'
+
+import ProcessSection from './ProcessSection'
+import ServiceTiersComparison from './ServiceTiersComparison'
 
 export default function ServicesDetailed() {
   return (
-    <>
-      <section className="bg-transparent min-h-[80vh] sm:min-h-[70vh] lg:min-h-screen flex items-center justify-center">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-8 shadow-lg ring-1 ring-gray-900/5 hover:shadow-xl transition-all duration-300 group flex flex-col">
-                <h4 className="text-xl font-bold text-gray-900 mb-3 font-display">{service.title}</h4>
-                <p className="text-gray-600 mb-4 text-sm leading-relaxed font-nav">{service.description}</p>
-                <div className="mb-4">
-                  <h5 className="text-sm font-semibold text-indigo-600 mb-2 font-display">Key Features</h5>
-                  <ul className="list-disc list-inside space-y-1 font-nav text-gray-600 text-sm">
-                    {service.features.map((feature, i) => (
-                      <li key={i}>{feature}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="mb-4">
-                  <h5 className="text-sm font-semibold text-indigo-600 mb-2 font-display">Technologies</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {service.technologies.map((tech, i) => (
-                      <span key={i} className="inline-block rounded bg-indigo-50 text-indigo-700 px-3 py-1 text-xs font-semibold font-nav">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <a href={service.learnMore} className="mt-auto inline-block text-indigo-600 font-semibold font-nav hover:underline">Learn More</a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="relative w-full py-28 sm:py-48 bg-white">
+      {/* Ultra-Light Market-Standard Grid */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ 
+        backgroundImage: `radial-gradient(circle at 1px 1px, #000 1px, transparent 0)`,
+        backgroundSize: '64px 64px' 
+      }} />
 
-      {/* Our Development Process Section */}
-        <section className="py-20 sm:py-28">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-base font-semibold text-indigo-600 mb-2 font-display">Our Development Process</h2>
-              <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-display">A proven methodology that delivers exceptional results</h3>
+      <div className="max-w-[1440px] mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="px-4 sm:px-6 lg:px-8 mb-24 sm:mb-48">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-12"
+          >
+            <div className="max-w-4xl">
+              <h2 className="text-5xl sm:text-7xl md:text-8xl font-bold text-gray-900 mb-10 font-display tracking-tightest leading-[0.9]">
+                Our <span className="text-indigo-600">Services</span>
+              </h2>
+              <p className="text-xl sm:text-2xl text-gray-400 font-display leading-relaxed font-light max-w-3xl">
+                We bridge the gap between vision and reality through high-performance engineering and sophisticated design architectures.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-stretch">
-              {/* Step 1 */}
-              <div className="flex flex-col items-center text-center bg-white rounded-2xl shadow-lg ring-1 ring-gray-900/10 p-6 relative h-full">
-                <div className="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold mb-2">1</div>
-                <h4 className="font-semibold text-lg text-gray-900 mb-1 font-display">Discovery</h4>
-                <p className="text-gray-600 text-sm font-nav mb-2">We start by understanding your business goals, technical requirements, and project constraints through detailed consultations.</p>
-                <span className="text-xs text-indigo-600 font-semibold font-nav">1-2 weeks</span>
-                {/* Arrow to next step */}
-                <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-                  <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 12h36m0 0l-6-6m6 6l-6 6" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-              {/* Step 2 */}
-              <div className="flex flex-col items-center text-center bg-white rounded-2xl shadow-lg ring-1 ring-gray-900/10 p-6 relative h-full">
-                <div className="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold mb-2">2</div>
-                <h4 className="font-semibold text-lg text-gray-900 mb-1 font-display">Planning</h4>
-                <p className="text-gray-600 text-sm font-nav mb-2">Our team creates a comprehensive project roadmap, technical architecture, and detailed specifications for your approval.</p>
-                <span className="text-xs text-indigo-600 font-semibold font-nav">1-2 weeks</span>
-                {/* Arrow to next step */}
-                <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-                  <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 12h36m0 0l-6-6m6 6l-6 6" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-              {/* Step 3 */}
-              <div className="flex flex-col items-center text-center bg-white rounded-2xl shadow-lg ring-1 ring-gray-900/10 p-6 relative h-full">
-                <div className="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold mb-2">3</div>
-                <h4 className="font-semibold text-lg text-gray-900 mb-1 font-display">Development</h4>
-                <p className="text-gray-600 text-sm font-nav mb-2">Agile development sprints with regular demos and feedback loops ensure your vision comes to life exactly as planned.</p>
-                <span className="text-xs text-indigo-600 font-semibold font-nav">8-16 weeks</span>
-                {/* Arrow to next step */}
-                <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-                  <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 12h36m0 0l-6-6m6 6l-6 6" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-              {/* Step 4 */}
-              <div className="flex flex-col items-center text-center bg-white rounded-2xl shadow-lg ring-1 ring-gray-900/10 p-6 h-full">
-                <div className="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold mb-2">4</div>
-                <h4 className="font-semibold text-lg text-gray-900 mb-1 font-display">Deployment</h4>
-                <p className="text-gray-600 text-sm font-nav mb-2">Rigorous testing, optimization, and smooth deployment to production with comprehensive documentation and training.</p>
-                <span className="text-xs text-indigo-600 font-semibold font-nav">1-2 weeks</span>
+            <div className="hidden md:block pb-4">
+              <div className="flex items-center gap-4 text-xs font-black text-gray-300 uppercase tracking-[0.5em] font-display">
+                Scroll to explore
+                <div className="w-16 h-[1px] bg-gray-100" />
               </div>
             </div>
-          </div>
-        </section>
-        
-    </>
+          </motion.div>
+        </div>
+
+        {/* Stacked Showcase */}
+        <div className="flex flex-col">
+          {services.map((service, index) => (
+            <ServiceCard key={index} service={service} index={index} />
+          ))}
+        </div>
+
+        {/* Development Process Integration - New Premium Version */}
+        <ProcessSection />
+
+        {/* Service Tiers Comparison - New Premium Version */}
+        <ServiceTiersComparison />
+      </div>
+    </section>
   )
 }

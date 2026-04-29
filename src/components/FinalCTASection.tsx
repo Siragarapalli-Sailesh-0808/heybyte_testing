@@ -1,92 +1,115 @@
-import React from "react";
+'use client'
 
-const FinalCTASection: React.FC = () => (
-  <>
-    <hr className="border-slate-200" />
+import React from 'react'
+import { motion } from 'framer-motion'
+import { ArrowRight, MessageSquare, Zap, Shield, Sparkles } from 'lucide-react'
 
-    <section className="bg-transparent py-24 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Main CTA */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 font-display">
-            Ready To Transform Your Digital Future?
-          </h2>
-          <p className="mx-auto max-w-3xl text-xl text-gray-600 mb-10" style={{ fontFamily: 'var(--font-nav)' }}>
-            Let&apos;s discuss how heybyte can help you achieve your technology goals. Schedule a free consultation with our experts today.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-5">
-            <a
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white text-base font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
-              style={{ fontFamily: 'var(--font-nav)' }}
+const FinalCTASection: React.FC = () => {
+  return (
+    <section className="relative w-full py-24 md:py-40 bg-white overflow-hidden">
+      {/* Background Orbs & Accents */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-[1440px] -z-10">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-50/50 rounded-full blur-[120px]"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-50/50 rounded-full blur-[100px]"
+        />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 md:gap-24">
+          
+          {/* Left Content */}
+          <div className="max-w-3xl text-center lg:text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              Schedule Consultation
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
-            </a>
-            <a
-              href="/services"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 ring-1 ring-indigo-600 text-indigo-600 text-base font-semibold rounded-lg hover:bg-indigo-50 transition-colors"
-              style={{ fontFamily: 'var(--font-nav)' }}
-            >
-              Explore Services
-            </a>
-          </div>
-        </div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-8">
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span className="text-xs font-black uppercase tracking-widest text-indigo-600 font-display">Let's Build Together</span>
+              </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {/* Free Consultation */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg ring-1 ring-gray-900/5 text-center">
-            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-100 mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-7 h-7 text-indigo-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2" style={{ fontFamily: 'var(--font-nav)' }}>
-              Free Consultation
-            </h3>
-            <p className="text-sm text-gray-600" style={{ fontFamily: 'var(--font-nav)' }}>
-              No commitment required. Let&apos;s explore possibilities together.
-            </p>
-          </div>
+              <h2 className="text-5xl md:text-7xl font-bold text-gray-900 mb-10 font-display tracking-tightest leading-[1.1]">
+                Ready to transform your <br className="hidden md:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">digital future?</span>
+              </h2>
 
-          {/* Quick Response */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg ring-1 ring-gray-900/5 text-center">
-            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-100 mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-7 h-7 text-indigo-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2" style={{ fontFamily: 'var(--font-nav)' }}>
-              Quick Response
-            </h3>
-            <p className="text-sm text-gray-600" style={{ fontFamily: 'var(--font-nav)' }}>
-              We&apos;ll get back to you within 24 hours with next steps.
-            </p>
+              <p className="text-xl md:text-2xl text-gray-500 font-display font-light leading-relaxed mb-12 max-w-2xl lg:mx-0 mx-auto">
+                Move your ideas forward with clarity. Talk to our experts and discover how <span className="text-gray-900 font-bold">Heybyte</span> can turn your vision into exceptional engineering reality.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
+                <motion.a
+                  href="/contact"
+                  whileHover={{ y: -3, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative group px-10 py-5 bg-gray-900 text-white rounded-2xl font-bold font-display text-lg shadow-2xl shadow-gray-200 hover:bg-indigo-600 transition-all duration-500 flex items-center gap-3 overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="relative z-10">Schedule a Consultation</span>
+                  <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+                </motion.a>
+
+                <motion.a
+                  href="/services"
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-3 text-gray-900 font-bold font-display group"
+                >
+                  Explore Services
+                  <div className="w-10 h-[1px] bg-gray-200 group-hover:w-14 group-hover:bg-indigo-600 transition-all duration-500" />
+                </motion.a>
+              </div>
+            </motion.div>
           </div>
 
-          {/* NDA Available */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg ring-1 ring-gray-900/5 text-center">
-            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-100 mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-7 h-7 text-indigo-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2" style={{ fontFamily: 'var(--font-nav)' }}>
-              NDA Available
-            </h3>
-            <p className="text-sm text-gray-600" style={{ fontFamily: 'var(--font-nav)' }}>
-              Your ideas are safe. We sign NDAs before discussions.
-            </p>
+          {/* Right Content - Trust Badges */}
+          <div className="w-full lg:w-auto flex flex-col gap-6">
+            {[
+              { icon: MessageSquare, title: 'Free Consultation', desc: 'No commitment required to start.' },
+              { icon: Zap, title: 'Quick Response', desc: 'Expert feedback within 24 hours.' },
+              { icon: Shield, title: 'NDA Available', desc: 'Your intellectual property is safe.' }
+            ].map((badge, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 + (i * 0.1), duration: 0.6 }}
+                whileHover={{ x: -10, backgroundColor: 'rgba(255,255,255,1)' }}
+                className="bg-white/50 backdrop-blur-md border border-gray-100 p-6 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.02)] flex items-start gap-5 w-full md:w-[400px] transition-all duration-300"
+              >
+                <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
+                  <badge.icon className="w-6 h-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-gray-900 mb-1 font-display">{badge.title}</h4>
+                  <p className="text-gray-400 text-sm font-display font-light leading-snug">{badge.desc}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
+
         </div>
       </div>
+
+      {/* Decorative Line */}
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gray-100 to-transparent" />
     </section>
-    <hr className="border-slate-200" />
+  )
+}
 
-  </>
-);
-
-export default FinalCTASection;
+export default FinalCTASection

@@ -1,95 +1,106 @@
-const teamMembers = [
+import React from 'react';
+import Image from 'next/image';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  image: string;
+}
+
+const teamMembers: TeamMember[] = [
   {
     name: "Teja Davuluri",
     role: "Founder & CEO",
     image: "/Teja-Davuluri.jpeg",
-    whatsapp: "https://wa.me/1234567890",
   },
   {
-    name: "Rahul Sharma",
-    role: "Lead Engineer",
-    image: "/person.jpg",
-    whatsapp: "https://wa.me/1234567891",
+    name: "Bhuvana",
+    role: "Founder’s Office Associate",
+    image: "/Bhuvana.png",
   },
   {
-    name: "Priya Nair",
-    role: "UI/UX Designer",
-    image: "/person.jpg",
-    whatsapp: "https://wa.me/1234567892",
+    name: "Krishna Manohar",
+    role: "Backend Developer",
+    image: "/Krishna-Manohar.png",
   },
   {
-    name: "Arjun Reddy",
-    role: "DevOps Engineer",
-    image: "/person.jpg",
-    whatsapp: "https://wa.me/1234567893",
+    name: "Sailesh Siragarapalli",
+    role: "Frontend Developer",
+    image: "/Sailesh.png",
   },
 ];
 
-export default function AboutTeam() {
+const TeamMemberCard = ({ member }: { member: TeamMember }) => {
   return (
-    <section className="font-display w-full bg-gray-100 pt-[77px] sm:pt-[91px] md:pt-[104px] pb-14 sm:pb-16 md:pb-20 px-4 sm:px-8 md:px-16 lg:px-24">
-      {/* Top header row */}
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-12">
-        {/* Left */}
-        <div className="max-w-md">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-            Our Team <span className="text-indigo-600">[{teamMembers.length}]</span>
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-indigo-600 leading-tight">
-            The People Behind the Vision
-          </h2>
+    <div className="flex flex-col items-center gap-6 group transition-all duration-300 px-8 sm:px-12 md:px-16">
+      <div className="relative">
+        {/* Soft glowing ring on hover */}
+        <div className="absolute inset-0 rounded-full bg-indigo-600/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 scale-110" />
+        
+        <div className="relative w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-2 border-white shadow-sm transition-all duration-500 scale-100 group-hover:scale-105 group-hover:border-indigo-600/50">
+          <Image
+            src={member.image}
+            alt={member.name}
+            fill
+            className="object-cover"
+          />
         </div>
-
-        {/* Right */}
-        <p className="text-sm sm:text-base text-gray-500 leading-relaxed max-w-md md:pt-8">
-          Our team is a blend of engineers, designers, and problem-solvers dedicated to
-          building products that matter. We come together with one shared goal: to turn
-          your ideas into software that works beautifully.
+      </div>
+      <div className="text-center">
+        <h3 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors duration-300 font-display">
+          {member.name}
+        </h3>
+        <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.15em] mt-1 font-display">
+          {member.role}
         </p>
       </div>
+    </div>
+  );
+};
 
-      {/* Cards grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {teamMembers.map((member) => (
-          <div
-            key={member.name}
-            className="bg-white rounded-2xl overflow-hidden flex flex-col"
-          >
-            {/* Photo */}
-            <div className="w-full aspect-[16/16] overflow-hidden bg-gray-200">
-              <img
-                src={member.image}
-                alt={member.name}
-                width={300}
-                height={400}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                // className="grayscale"
-              />
-            </div>
+const TeamMarquee = () => {
+  // Triple members to ensure enough coverage for infinite scroll
+  const displayMembers = [...teamMembers, ...teamMembers, ...teamMembers, ...teamMembers];
 
-            {/* Info */}
-            <div className="p-4 flex flex-col gap-3">
-              <div>
-                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-0.5">
-                  {member.role}
-                </p>
-                <h3 className="text-base font-bold text-indigo-600">{member.name}</h3>
-              </div>
+  return (
+    <div className="relative w-full overflow-hidden py-10">
+      {/* Gradient Fade Edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-48 z-10 bg-gradient-to-r from-[#F5F6FA] via-[#F5F6FA]/80 to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-48 z-10 bg-gradient-to-l from-[#F5F6FA] via-[#F5F6FA]/80 to-transparent pointer-events-none" />
 
-              {/* CTA button */}
-              {/* <a
-                href={member.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all duration-200"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                Talk With {member.name.split(" ")[0]}
-              </a> */}
-            </div>
+      <div className="flex animate-marquee pause-on-hover whitespace-nowrap w-fit">
+        {displayMembers.map((member, index) => (
+          <div key={index} className="inline-block">
+            <TeamMemberCard member={member} />
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+export default function AboutTeam() {
+  return (
+    <section className="bg-[#F5F6FA] py-20 sm:py-32 lg:py-40 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-20 sm:mb-28">
+          <div className="max-w-2xl">
+            <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-gray-400 mb-6 font-display">
+              OUR TEAM <span className="text-indigo-600">[{teamMembers.length}]</span>
+            </p>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-indigo-600 font-display leading-[1.1] tracking-tight">
+              The People Behind <br className="hidden sm:block" /> the Vision
+            </h2>
+          </div>
+          <div className="max-w-md lg:pb-2">
+            <p className="text-base sm:text-lg text-gray-500 leading-relaxed font-display font-light">
+              Our team is a blend of engineers, designers, and problem-solvers dedicated to building products that matter. We come together with one shared goal: to turn your ideas into software that works beautifully.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <TeamMarquee />
     </section>
   );
 }
