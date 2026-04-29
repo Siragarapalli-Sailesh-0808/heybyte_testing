@@ -71,8 +71,12 @@ const FlipCard = ({ member, index }: { member: TeamMember; index: number }) => {
   return (
     <div 
       className={`relative ${dimension} ${offset} perspective-1000 group cursor-pointer transition-transform duration-500`}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      onMouseEnter={() => {
+        if (window.matchMedia("(hover: hover)").matches) setIsFlipped(true);
+      }}
+      onMouseLeave={() => {
+        if (window.matchMedia("(hover: hover)").matches) setIsFlipped(false);
+      }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
