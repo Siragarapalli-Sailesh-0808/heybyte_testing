@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="relative isolate bg-white min-h-screen flex flex-col">
+    <div className="relative isolate bg-white min-h-screen flex flex-col overflow-x-hidden max-w-[100vw]">
       <svg
         aria-hidden="true"
         className="absolute inset-0 right-0 -z-10 size-full mask-[radial-gradient(100%_100%_at_top_right,white,transparent)] stroke-gray-200 opacity-70"
@@ -39,7 +39,7 @@ export default function ContactPage() {
       </svg>
       <Header />
       
-      <main className="flex-grow">
+      <main className="flex-grow overflow-x-hidden">
         {/* <ImageContentSectionInvert bgClass="bg-transparent" /> */}
 
         <AboutTeam />
