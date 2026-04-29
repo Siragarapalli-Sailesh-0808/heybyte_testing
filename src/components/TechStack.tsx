@@ -17,7 +17,7 @@ const techStack: TechItem[] = [
   { name: 'Next.js', logo: '/technologies/Next-Js.png', description: 'The React framework for production-grade web applications.', category: 'Frontend' },
   { name: 'Vue.js', logo: '/technologies/Vue-Js.png', description: 'Versatile progressive framework for modern web interfaces.', category: 'Frontend' },
   { name: 'Angular', logo: '/technologies/Angular.png', description: 'Enterprise-grade platform for complex application development.', category: 'Frontend' },
-  { name: 'Tailwind CSS', logo: '/technologies/React.png', description: 'Utility-first CSS framework for rapid UI development.', category: 'Frontend' },
+  { name: 'Tailwind', logo: '/technologies/React.png', description: 'Utility-first CSS framework for rapid UI development.', category: 'Frontend' },
   
   // Backend
   { name: 'Node.js', logo: '/technologies/Node-Js.png', description: 'High-performance backend runtime for scalable APIs.', category: 'Backend' },
@@ -34,7 +34,7 @@ const techStack: TechItem[] = [
   // Cloud
   { name: 'AWS', logo: '/technologies/AWS.png', description: 'Comprehensive cloud computing platform for global scale.', category: 'Cloud' },
   { name: 'Azure', logo: '/technologies/Azure.png', description: 'Microsoft-powered cloud for enterprise-ready infrastructure.', category: 'Cloud' },
-  { name: 'Google Cloud', logo: '/technologies/cloud.png', description: 'High-performance cloud services for modern applications.', category: 'Cloud' },
+  { name: 'GCP', logo: '/technologies/cloud.png', description: 'High-performance cloud services for modern applications.', category: 'Cloud' },
   
   // DevOps
   { name: 'Docker', logo: '/technologies/Docker.png', description: 'Containerization for consistent deployment environments.', category: 'DevOps' },
@@ -127,7 +127,10 @@ export default function TechStack() {
 
   // Detect Mobile
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    // Run immediately on mount
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
