@@ -44,45 +44,46 @@ const techStack: TechItem[] = [
 
 const categories = ['Frontend', 'Backend', 'Database', 'Cloud', 'DevOps']
 
-const TechCard = ({ item, isActive, isMobile, onClick }: { item: TechItem, isActive: boolean, isMobile: boolean, onClick?: () => void }) => {
+const TechCard = ({ item, isForcedActive, onManualActivate }: { item: TechItem, isForcedActive: boolean, onManualActivate: () => void }) => {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
+  const [isHovered, setIsHovered] = useState(false)
 
   function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    if (isMobile) return
     const { left, top } = currentTarget.getBoundingClientRect()
     mouseX.set(clientX - left)
     mouseY.set(clientY - top)
   }
 
+  const isActive = isForcedActive || isHovered
+
   return (
     <motion.div
-      onClick={onClick}
+      onClick={onManualActivate}
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       initial={{ opacity: 0, y: 20 }}
       animate={{ 
-        opacity: isActive ? 1 : (isMobile ? 0.6 : 1), 
+        opacity: 1,
         y: isActive ? -8 : 0,
         scale: isActive ? 1.05 : 1,
-        borderColor: isActive ? '#4f46e5' : '#f3f4f6'
       }}
-      transition={{ duration: 0.5 }}
-      className={`group relative bg-white rounded-2xl border p-6 md:p-8 flex flex-col items-center text-center h-full cursor-pointer transition-shadow duration-500 ${
-        isActive ? 'shadow-[0_20px_60px_rgba(79,70,229,0.1)] border-indigo-100' : 'border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.02)]'
+      transition={{ duration: 0.4 }}
+      className={`group relative bg-white rounded-2xl border p-6 md:p-8 flex flex-col items-center text-center h-full cursor-pointer transition-all duration-500 ${
+        isActive ? 'shadow-[0_20px_60px_rgba(79,70,229,0.1)] border-indigo-200' : 'border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.02)]'
       }`}
     >
-      {/* Spotlight Effect (Desktop Only) */}
-      {!isMobile && (
-        <motion.div
-          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
-          style={{
-            background: useTransform(
-              [mouseX, mouseY],
-              ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(79, 70, 229, 0.05), transparent 80%)`
-            ),
-          }}
-        />
-      )}
+      {/* Universal Spotlight Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useTransform(
+            [mouseX, mouseY],
+            ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(79, 70, 229, 0.08), transparent 80%)`
+          ),
+        }}
+      />
 
       <div className="relative z-10 w-full flex flex-col items-center">
         <div className={`w-12 h-12 md:w-16 md:h-16 mb-4 md:mb-6 flex items-center justify-center transition-all duration-500 ${
@@ -95,15 +96,8 @@ const TechCard = ({ item, isActive, isMobile, onClick }: { item: TechItem, isAct
           isActive ? 'text-indigo-600' : 'text-gray-900 group-hover:text-indigo-600'
         } font-display mb-2`}>{item.name}</h4>
         
-        {/* Category Badge on Mobile */}
-        {isMobile && isActive && (
-          <span className="text-[8px] font-black uppercase tracking-widest text-indigo-400 mb-2">
-            {item.category}
-          </span>
-        )}
-
         <p className={`text-gray-400 text-[10px] md:text-xs leading-relaxed font-display font-light transition-all duration-300 ${
-          isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0'
+          isActive ? 'opacity-100 translate-y-0 h-auto' : 'opacity-0 translate-y-2 h-0 overflow-hidden md:h-auto md:opacity-0 group-hover:opacity-100 group-hover:translate-y-0'
         }`}>
           {item.description}
         </p>
@@ -119,37 +113,26 @@ const TechCard = ({ item, isActive, isMobile, onClick }: { item: TechItem, isAct
 
 export default function TechStack() {
   const [activeCategory, setActiveCategory] = useState('Frontend')
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [loopIndex, setLoopIndex] = useState(0)
+  const [userInteracted, setUserInteracted] = useState(false)
   
   const filteredTech = techStack.filter((item) => item.category === activeCategory)
 
-  // Detect Mobile
+  // NO-FAIL LOOP: Runs regardless of device detection to ensure client sees animation
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    // Run immediately on mount
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Auto-loop on Mobile
-  useEffect(() => {
-    if (!isMobile) return
+    if (userInteracted) return
 
     const interval = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % filteredTech.length)
-    }, 2500)
+      setLoopIndex((current) => (current + 1) % filteredTech.length)
+    }, 3000)
 
     return () => clearInterval(interval)
-  }, [isMobile, filteredTech.length])
+  }, [userInteracted, filteredTech.length])
 
-  // Reset active index when category changes
+  // Reset when category changes
   useEffect(() => {
-    setActiveIndex(0)
+    setLoopIndex(0)
+    setUserInteracted(false)
   }, [activeCategory])
 
   return (
@@ -216,14 +199,14 @@ export default function TechStack() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    onMouseEnter={() => !isMobile && setHoveredIndex(index)}
-                    onMouseLeave={() => !isMobile && setHoveredIndex(null)}
                   >
                     <TechCard 
                       item={item} 
-                      isActive={isMobile ? activeIndex === index : hoveredIndex === index}
-                      isMobile={isMobile}
-                      onClick={() => isMobile && setActiveIndex(index)}
+                      isForcedActive={loopIndex === index}
+                      onManualActivate={() => {
+                        setLoopIndex(index)
+                        setUserInteracted(true)
+                      }}
                     />
                   </motion.div>
                 ))}
