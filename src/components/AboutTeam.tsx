@@ -102,18 +102,18 @@ const FlipCard = ({ member, index }: { member: TeamMember; index: number }) => {
 
         {/* Back Side: Quote */}
         <div
-          className="absolute inset-0 backface-hidden rounded-[2rem] bg-white shadow-2xl p-10 flex flex-col justify-between border border-gray-100"
+          className="absolute inset-0 backface-hidden rounded-[2rem] bg-white shadow-2xl p-6 md:p-10 flex flex-col justify-between border border-gray-100"
           style={{ transform: 'rotateY(180deg)' }}
         >
           <div>
-            <div className="w-8 h-[2px] bg-indigo-600 mb-6" />
-            <p className="text-sm sm:text-base text-gray-600 font-display leading-relaxed font-light italic">
+            <div className="w-8 h-[2px] bg-indigo-600 mb-4 md:mb-6" />
+            <p className="text-[13px] md:text-base text-gray-600 font-display leading-relaxed font-light italic">
               "{member.quote}"
             </p>
           </div>
           <div>
-            <h4 className="text-lg font-bold text-gray-900 font-display">{member.name}</h4>
-            <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-[0.15em] mt-0.5 font-display">
+            <h4 className="text-base md:text-lg font-bold text-gray-900 font-display">{member.name}</h4>
+            <p className="text-[9px] md:text-[10px] font-bold text-indigo-600 uppercase tracking-[0.15em] mt-0.5 font-display">
               {member.role}
             </p>
           </div>
