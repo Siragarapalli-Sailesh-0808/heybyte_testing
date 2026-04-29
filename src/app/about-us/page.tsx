@@ -7,13 +7,13 @@ import FinalCTASection from '@/components/FinalCTASection'
 import Metrics from '@/components/Metrics'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - HeyByte',
-  description: 'Get in touch with us. We would love to hear from you.',
+  title: 'About Us - HeyByte',
+  description: 'Learn more about our team and vision.',
 }
 
-export default function ContactPage() {
+export default function AboutUsPage() {
   return (
-    <div className="relative isolate bg-white min-h-screen flex flex-col overflow-x-hidden max-w-[100vw]">
+    <div className="relative isolate bg-white min-h-screen flex flex-col">
       <svg
         aria-hidden="true"
         className="absolute inset-0 right-0 -z-10 size-full mask-[radial-gradient(100%_100%_at_top_right,white,transparent)] stroke-gray-200 opacity-70"
@@ -22,7 +22,7 @@ export default function ContactPage() {
           <pattern
             x="50%"
             y={-1}
-            id="contact-pattern"
+            id="about-pattern"
             width={200}
             height={200}
             patternUnits="userSpaceOnUse"
@@ -31,7 +31,7 @@ export default function ContactPage() {
           </pattern>
         </defs>
         <rect
-          fill="url(#contact-pattern)"
+          fill="url(#about-pattern)"
           width="100%"
           height="100%"
           strokeWidth={0}
@@ -39,14 +39,10 @@ export default function ContactPage() {
       </svg>
       <Header />
       
-      <main className="flex-grow overflow-x-hidden">
-        {/* <ImageContentSectionInvert bgClass="bg-transparent" /> */}
-
+      <main className="flex-grow overflow-x-hidden w-full">
         <AboutTeam />
-
         <Metrics />
         <FinalCTASection />
-
       </main>
 
       <Footer />
