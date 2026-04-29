@@ -39,7 +39,7 @@ export default function AboutUsPage() {
       </svg>
       <Header />
       
-      <main className="flex-grow overflow-x-hidden w-full">
+      <main className="flex-grow">
         <AboutTeam />
         <Metrics />
         <FinalCTASection />

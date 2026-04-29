@@ -130,7 +130,7 @@ export default function AboutTeam() {
   const doubleMembers = [...teamMembers, ...teamMembers]
 
   return (
-    <section className="relative w-full py-24 md:py-32 bg-white overflow-x-clip max-w-[100vw]">
+    <section className="relative w-full py-24 md:py-32 bg-white overflow-hidden">
       {/* Header Section */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-8 mb-10 md:mb-16">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12">
@@ -164,7 +164,7 @@ export default function AboutTeam() {
 
       {/* Carousel Container */}
       <div 
-        className="relative w-full py-6 overflow-hidden max-w-full"
+        className="relative w-full py-6"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -172,7 +172,7 @@ export default function AboutTeam() {
         <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-64 z-10 bg-gradient-to-r from-white via-white/50 to-transparent pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-64 z-10 bg-gradient-to-l from-white via-white/50 to-transparent pointer-events-none" />
 
-        <div className="flex overflow-hidden py-24 md:py-32 max-w-[100vw]">
+        <div className="flex overflow-hidden py-24 md:py-32">
           <motion.div 
             className="flex gap-8 px-4"
             animate={{ x: isPaused ? undefined : "-50%" }}
