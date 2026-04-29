@@ -120,8 +120,8 @@ export default function TechStack() {
         </div>
 
         {/* Category Tabs */}
-        <div className="flex justify-center mb-16 md:mb-20 overflow-x-auto no-scrollbar pb-4">
-          <div className="flex bg-gray-50/50 p-1.5 rounded-full border border-gray-100 backdrop-blur-sm whitespace-nowrap">
+        <div className="flex justify-start md:justify-center mb-16 md:mb-20 overflow-x-auto no-scrollbar pb-4 px-4 sm:px-0">
+          <div className="flex bg-gray-50/50 p-1.5 rounded-full border border-gray-100 backdrop-blur-sm whitespace-nowrap mx-auto md:mx-0">
             {categories.map((cat) => (
               <button
                 key={cat}
