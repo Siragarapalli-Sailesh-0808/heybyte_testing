@@ -1,67 +1,146 @@
-import React from "react";
+'use client'
 
-const technologies: ({ name: string; logo: string } | null)[] = [
-  { name: "React", logo: "/technologies/React.png" },
-  null,
-  { name: "Node.js", logo: "/technologies/Node-Js.png" },
-  { name: "Python", logo: "/technologies/Python.png" },
-  null,
-  { name: "AWS", logo: "/technologies/AWS.png" },
-  null,
-  { name: "Azure", logo: "/technologies/Azure.png" },
-  null,
-  { name: "Docker", logo: "/technologies/Docker.png" },
-  { name: "Kubernetes", logo: "/technologies/Kubernetes.png" },
-  null,
-  null,
-  { name: "Go", logo: "/technologies/Go.png" },
-  { name: "Java", logo: "/technologies/Java.png" },
-  null,
-  { name: "Jenkins", logo: "/technologies/Jenkins.png" },
-  { name: "Cloud", logo: "/technologies/cloud.png" },
-];
+import React, { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+
+const technologies = [
+  { name: "React", logo: "/technologies/React.png", desc: "Modern Frontend UI" },
+  { name: "Node.js", logo: "/technologies/Node-Js.png", desc: "Scalable Backend Systems" },
+  { name: "Python", logo: "/technologies/Python.png", desc: "AI & Data Processing" },
+  { name: "AWS", logo: "/technologies/AWS.png", desc: "Cloud Infrastructure" },
+  { name: "Azure", logo: "/technologies/Azure.png", desc: "Enterprise Solutions" },
+  { name: "Docker", logo: "/technologies/Docker.png", desc: "Containerization" },
+  { name: "Kubernetes", logo: "/technologies/Kubernetes.png", desc: "Orchestration" },
+  { name: "Go", logo: "/technologies/Go.png", desc: "High Performance" },
+  { name: "Java", logo: "/technologies/Java.png", desc: "Enterprise Core" },
+  { name: "Jenkins", logo: "/technologies/Jenkins.png", desc: "Continuous Delivery" },
+  { name: "Cloud", logo: "/technologies/cloud.png", desc: "Hybrid Ecosystems" },
+]
 
 export default function TechnoShowcase() {
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile for behavior switching
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Mobile Auto-loop
+  useEffect(() => {
+    if (!isMobile || isPaused) return
+    
+    const interval = setInterval(() => {
+      setActiveMobileIndex((prev) => (prev + 1) % technologies.length)
+    }, 1500)
+
+    return () => clearInterval(interval)
+  }, [isMobile, isPaused])
+
+  const handleManualTap = (index: number) => {
+    if (!isMobile) return
+    setActiveMobileIndex(index)
+    setIsPaused(true)
+    setTimeout(() => setIsPaused(false), 3000)
+  }
+
   return (
-    <section className="font-display w-full bg-white py-12 sm:py-16 md:py-20 px-4 sm:px-8 md:px-16 lg:px-24">
+    <section className="font-display w-full bg-white py-24 md:py-40 px-4 sm:px-8 md:px-16 lg:px-24 overflow-hidden">
       {/* Header */}
-      <div className="mb-8 sm:mb-10 md:mb-12 max-w-xl">
-        <p className="text-blue-600 font-semibold text-xs sm:text-sm uppercase tracking-wide mb-2 sm:mb-3">
-          Our Technologies
-        </p>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-          The tools we use to build modern solutions.
-        </h2>
+      <div className="mb-16 md:mb-24 max-w-xl">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-indigo-600 mb-6 block">
+            OUR TECHNOLOGIES
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight tracking-tightest">
+            The tools we use to build <br className="hidden md:block" />
+            modern solutions.
+          </h2>
+        </motion.div>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
-        {technologies.map((tech, index) =>
-          tech === null ? (
-            <div key={`empty-${index}`} style={{ height: "140px" }} className="hidden md:block rounded-sm" />
-          ) : (
-          <div
-            key={tech.name}
-            style={{ height: "140px" }}
-            className="bg-gray-100 rounded-sm flex flex-col items-center justify-between p-4 group hover:bg-gray-200 transition-colors duration-200"
-          >
-            <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
-              <img
-                src={tech.logo}
-                alt={tech.name}
-                width={56}
-                height={56}
-                style={{ width: 56, height: 56, objectFit: "contain" }}
-                className="md:grayscale group-hover:grayscale-0 transition-all duration-200"
-              />
-            </div>
-            <p className="mt-2 text-[9px] font-semibold tracking-widest text-gray-500 uppercase self-start leading-tight">
-              {tech.name}
-            </p>
-          </div>
+      {/* Scattered Bento Grid - Preserving Layout */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6 auto-rows-[160px] md:auto-rows-[180px]">
+        {technologies.map((tech, index) => {
+          // Asymmetric spans for bento look on desktop
+          const spans = [
+            "md:col-span-2 md:row-span-1",
+            "md:col-span-1 md:row-span-1",
+            "md:col-span-1 md:row-span-2",
+            "md:col-span-1 md:row-span-1",
+            "md:col-span-2 md:row-span-1",
+            "md:col-span-1 md:row-span-1",
+            "md:col-span-1 md:row-span-1",
+            "md:col-span-1 md:row-span-1",
+            "md:col-span-2 md:row-span-1",
+            "md:col-span-1 md:row-span-1",
+            "md:col-span-2 md:row-span-1",
+          ]
+
+          const isActiveMobile = isMobile && activeMobileIndex === index
+
+          return (
+            <motion.div
+              key={tech.name}
+              onClick={() => handleManualTap(index)}
+              className={`
+                relative rounded-[2rem] p-6 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer
+                ${spans[index % spans.length]}
+                ${isActiveMobile 
+                  ? 'bg-white shadow-[0_20px_50px_rgba(0,0,0,0.08)] ring-1 ring-gray-100 -translate-y-2' 
+                  : 'bg-gray-50 md:hover:bg-white md:hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] md:hover:ring-1 md:hover:ring-gray-100 md:hover:-translate-y-2'}
+              `}
+            >
+              <div className="flex-grow flex items-center justify-center w-full">
+                <img
+                  src={tech.logo}
+                  alt={tech.name}
+                  className={`
+                    w-12 md:w-14 h-12 md:h-14 object-contain transition-all duration-500
+                    ${isActiveMobile ? 'grayscale-0 scale-110' : 'md:grayscale group-hover:grayscale-0 grayscale'}
+                  `}
+                />
+              </div>
+              
+              <div className="w-full mt-4">
+                 <p className={`
+                   text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500
+                   ${isActiveMobile ? 'text-indigo-600' : 'text-gray-400'}
+                 `}>
+                   {tech.name}
+                 </p>
+                 
+                 <AnimatePresence>
+                   {isActiveMobile && (
+                     <motion.p
+                       initial={{ opacity: 0, height: 0 }}
+                       animate={{ opacity: 1, height: 'auto' }}
+                       exit={{ opacity: 0, height: 0 }}
+                       className="text-[9px] text-gray-400 font-display mt-1 line-clamp-1"
+                     >
+                       {tech.desc}
+                     </motion.p>
+                   )}
+                 </AnimatePresence>
+              </div>
+
+              {/* Desktop Hover Gradient Accent */}
+              {!isMobile && (
+                 <div className="absolute inset-0 rounded-[2rem] bg-indigo-50/0 group-hover:bg-indigo-50/10 transition-colors duration-500 -z-10" />
+              )}
+            </motion.div>
           )
-        )}
+        })}
       </div>
     </section>
-  );
+  )
 }

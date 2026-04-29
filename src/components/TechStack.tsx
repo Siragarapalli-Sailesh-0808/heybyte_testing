@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Image from 'next/image'
 
@@ -17,7 +17,7 @@ const techStack: TechItem[] = [
   { name: 'Next.js', logo: '/technologies/Next-Js.png', description: 'The React framework for production-grade web applications.', category: 'Frontend' },
   { name: 'Vue.js', logo: '/technologies/Vue-Js.png', description: 'Versatile progressive framework for modern web interfaces.', category: 'Frontend' },
   { name: 'Angular', logo: '/technologies/Angular.png', description: 'Enterprise-grade platform for complex application development.', category: 'Frontend' },
-  { name: 'Tailwind', logo: '/technologies/React.png', description: 'Utility-first CSS framework for rapid UI development.', category: 'Frontend' },
+  { name: 'Tailwind CSS', logo: '/technologies/React.png', description: 'Utility-first CSS framework for rapid UI development.', category: 'Frontend' }, // Placeholder logo if tailwind missing
   
   // Backend
   { name: 'Node.js', logo: '/technologies/Node-Js.png', description: 'High-performance backend runtime for scalable APIs.', category: 'Backend' },
@@ -34,7 +34,7 @@ const techStack: TechItem[] = [
   // Cloud
   { name: 'AWS', logo: '/technologies/AWS.png', description: 'Comprehensive cloud computing platform for global scale.', category: 'Cloud' },
   { name: 'Azure', logo: '/technologies/Azure.png', description: 'Microsoft-powered cloud for enterprise-ready infrastructure.', category: 'Cloud' },
-  { name: 'GCP', logo: '/technologies/cloud.png', description: 'High-performance cloud services for modern applications.', category: 'Cloud' },
+  { name: 'Google Cloud', logo: '/technologies/cloud.png', description: 'High-performance cloud services for modern applications.', category: 'Cloud' },
   
   // DevOps
   { name: 'Docker', logo: '/technologies/Docker.png', description: 'Containerization for consistent deployment environments.', category: 'DevOps' },
@@ -44,10 +44,9 @@ const techStack: TechItem[] = [
 
 const categories = ['Frontend', 'Backend', 'Database', 'Cloud', 'DevOps']
 
-const TechCard = ({ item, isForcedActive, onManualActivate }: { item: TechItem, isForcedActive: boolean, onManualActivate: () => void }) => {
+const TechCard = ({ item }: { item: TechItem }) => {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const [isHovered, setIsHovered] = useState(false)
 
   function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect()
@@ -55,119 +54,79 @@ const TechCard = ({ item, isForcedActive, onManualActivate }: { item: TechItem, 
     mouseY.set(clientY - top)
   }
 
-  const isActive = isForcedActive || isHovered
-
   return (
     <motion.div
-      onClick={onManualActivate}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       initial={{ opacity: 0, y: 20 }}
-      animate={{ 
-        opacity: 1,
-        y: isActive ? -8 : 0,
-        scale: isActive ? 1.05 : 1,
-      }}
-      transition={{ duration: 0.4 }}
-      className={`group relative bg-white rounded-2xl border p-6 md:p-8 flex flex-col items-center text-center h-full cursor-pointer transition-all duration-500 ${
-        isActive ? 'shadow-[0_20px_60px_rgba(79,70,229,0.1)] border-indigo-200' : 'border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.02)]'
-      }`}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      className="group relative bg-white rounded-2xl border border-gray-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-indigo-100 flex flex-col items-center text-center h-full"
     >
-      {/* Universal Spotlight Effect */}
+      {/* Spotlight Effect */}
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
           background: useTransform(
             [mouseX, mouseY],
-            ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(79, 70, 229, 0.08), transparent 80%)`
+            ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(79, 70, 229, 0.05), transparent 80%)`
           ),
         }}
       />
 
-      <div className="relative z-10 w-full flex flex-col items-center">
-        <div className={`w-12 h-12 md:w-16 md:h-16 mb-4 md:mb-6 flex items-center justify-center transition-all duration-500 ${
-          isActive ? 'grayscale-0 scale-110' : 'grayscale group-hover:grayscale-0 group-hover:scale-110'
-        }`}>
+      <div className="relative z-10">
+        <div className="w-16 h-16 mb-6 flex items-center justify-center grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110">
           <Image src={item.logo} alt={item.name} width={64} height={64} className="object-contain" />
         </div>
         
-        <h4 className={`text-sm md:text-lg font-bold transition-colors duration-300 ${
-          isActive ? 'text-indigo-600' : 'text-gray-900 group-hover:text-indigo-600'
-        } font-display mb-2`}>{item.name}</h4>
+        <h4 className="text-lg font-bold text-gray-900 mb-3 font-display">{item.name}</h4>
         
-        <p className={`text-gray-400 text-[10px] md:text-xs leading-relaxed font-display font-light transition-all duration-300 ${
-          isActive ? 'opacity-100 translate-y-0 h-auto' : 'opacity-0 translate-y-2 h-0 overflow-hidden md:h-auto md:opacity-0 group-hover:opacity-100 group-hover:translate-y-0'
-        }`}>
+        <p className="text-gray-400 text-xs leading-relaxed font-display font-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
           {item.description}
         </p>
       </div>
 
-      {/* Bottom Accent */}
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-1 bg-indigo-600 rounded-full transition-all duration-500 ${
-        isActive ? 'w-1/2' : 'w-0 group-hover:w-1/2'
-      }`} />
+      {/* Subtle Bottom Accent */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-indigo-600 rounded-full transition-all duration-500 group-hover:w-1/2" />
     </motion.div>
   )
 }
 
 export default function TechStack() {
   const [activeCategory, setActiveCategory] = useState('Frontend')
-  const [loopIndex, setLoopIndex] = useState(0)
-  const [userInteracted, setUserInteracted] = useState(false)
-  
-  const filteredTech = techStack.filter((item) => item.category === activeCategory)
-
-  // NO-FAIL LOOP: Runs regardless of device detection to ensure client sees animation
-  useEffect(() => {
-    if (userInteracted) return
-
-    const interval = setInterval(() => {
-      setLoopIndex((current) => (current + 1) % filteredTech.length)
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [userInteracted, filteredTech.length])
-
-  // Reset when category changes
-  useEffect(() => {
-    setLoopIndex(0)
-    setUserInteracted(false)
-  }, [activeCategory])
 
   return (
     <section className="relative w-full py-24 md:py-40 bg-white">
-      {/* Background Orbs */}
-      <div className="absolute top-1/4 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-indigo-50/20 rounded-full blur-[80px] md:blur-[120px] -z-10" />
-      <div className="absolute bottom-1/4 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-50/20 rounded-full blur-[80px] md:blur-[120px] -z-10" />
+      {/* Subtle Background Elements */}
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-indigo-50/20 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-purple-50/20 rounded-full blur-[120px] -z-10" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12 md:mb-24">
+        <div className="text-center mb-16 md:mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] text-indigo-600 mb-6 block font-display">TECH STACK</span>
-            <h2 className="text-3xl md:text-6xl font-bold text-gray-900 mb-6 md:mb-8 font-display tracking-tightest leading-tight">
+            <span className="text-xs font-black uppercase tracking-[0.5em] text-indigo-600 mb-6 block font-display">TECH STACK</span>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8 font-display tracking-tightest leading-tight">
               Cutting-edge tools <br className="hidden md:block" /> powering our solutions
             </h2>
-            <p className="text-base md:text-xl text-gray-400 font-display leading-relaxed font-light max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-400 font-display leading-relaxed font-light max-w-2xl mx-auto">
               A modern, scalable, and reliable technology ecosystem tailored for performance.
             </p>
           </motion.div>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex justify-center mb-12 md:mb-20 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4">
+        <div className="flex justify-center mb-16 md:mb-20 overflow-x-auto no-scrollbar pb-4">
           <div className="flex bg-gray-50/50 p-1.5 rounded-full border border-gray-100 backdrop-blur-sm whitespace-nowrap">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 md:px-10 py-2.5 md:py-3 rounded-full text-[10px] md:text-sm font-bold font-display transition-all duration-300 relative ${
+                className={`px-6 md:px-10 py-3 rounded-full text-sm font-bold font-display transition-all duration-300 relative ${
                   activeCategory === cat ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
                 }`}
               >
@@ -188,10 +147,12 @@ export default function TechStack() {
         <div className="max-w-6xl mx-auto">
           <motion.div 
             layout
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
           >
             <AnimatePresence mode="popLayout">
-              {filteredTech.map((item, index) => (
+              {techStack
+                .filter((item) => item.category === activeCategory)
+                .map((item, index) => (
                   <motion.div
                     key={item.name}
                     layout
@@ -200,14 +161,7 @@ export default function TechStack() {
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
                   >
-                    <TechCard 
-                      item={item} 
-                      isForcedActive={loopIndex === index}
-                      onManualActivate={() => {
-                        setLoopIndex(index)
-                        setUserInteracted(true)
-                      }}
-                    />
+                    <TechCard item={item} />
                   </motion.div>
                 ))}
             </AnimatePresence>
