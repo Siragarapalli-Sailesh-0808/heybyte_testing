@@ -1,58 +1,101 @@
+'use client'
 
-"use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from 'react'
+import { motion, useInView, useSpring, useTransform } from 'framer-motion'
 
-interface MetricCardProps {
-  value: number;
-  label: string;
-  duration?: number; // ms
+interface Metric {
+  value: number
+  label: string
+  subtext: string
+  suffix: string
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({ value, label, duration = 2000 }) => {
-  const ref = useRef<HTMLSpanElement>(null);
+const metrics: Metric[] = [
+  { value: 50, label: 'Projects', subtext: 'Delivered across industries', suffix: '+' },
+  { value: 25, label: 'Clients', subtext: 'Trusted by growing businesses', suffix: '+' },
+  { value: 6, label: 'Experience', subtext: 'Building since 2018', suffix: '+' }
+]
+
+function CountUp({ value, suffix }: { value: number, suffix: string }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  
+  const spring = useSpring(0, {
+    stiffness: 40,
+    damping: 20,
+  })
+
+  const display = useTransform(spring, (current) => Math.floor(current).toString())
 
   useEffect(() => {
-    let start = 0;
-    const end = value;
-    const increment = end / (duration / 20);
-    let current = 0;
-    let frame: number;
-
-    function animate() {
-      current += increment;
-      if (ref.current) {
-        ref.current.textContent = Math.floor(current).toString();
-      }
-      if (current < end) {
-        frame = requestAnimationFrame(animate);
-      } else {
-        if (ref.current) ref.current.textContent = end.toString();
-      }
+    if (isInView) {
+      spring.set(value)
     }
-    animate();
-    return () => cancelAnimationFrame(frame);
-  }, [value, duration]);
+  }, [isInView, spring, value])
 
   return (
-    <div className="bg-white rounded-2xl p-8 shadow-lg ring-1 ring-gray-900/5 text-center flex flex-col items-center">
-      <span className="text-4xl sm:text-5xl font-bold text-indigo-600 font-display">
-        <span ref={ref}>0</span>+
-      </span>
-      <span className="mt-2 text-lg text-gray-700 font-nav">{label}</span>
-    </div>
-  );
-};
+    <span ref={ref} className="tabular-nums">
+      <motion.span>{display}</motion.span>
+      {suffix}
+    </span>
+  )
+}
 
-const Metrics: React.FC = () => (
-  <section className="py-16 bg-gray-50">
-    <div className="max-w-5xl mx-auto px-4">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-        <MetricCard value={50} label="Projects" />
-        <MetricCard value={25} label="Clients" />
-        <MetricCard value={6} label="Years Experience" />
+export default function Metrics() {
+  return (
+    <section className="relative w-full py-24 md:py-40 bg-white overflow-hidden">
+      {/* Premium Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ 
+        backgroundImage: `radial-gradient(circle at 2px 2px, #000 1px, transparent 0)`,
+        backgroundSize: '48px 48px' 
+      }} />
+
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 items-start">
+          {metrics.map((metric, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: i * 0.1 }}
+              className="relative group flex flex-col items-center text-center"
+            >
+              {/* Vertical Separator for Desktop */}
+              {i !== 0 && (
+                <div className="absolute left-[-15%] top-1/4 bottom-1/4 w-px bg-gray-100 hidden lg:block" />
+              )}
+
+              <div className="relative mb-6">
+                 {/* Subtle Glow Behind Numbers */}
+                <div className="absolute inset-0 bg-indigo-400/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
+                
+                <h3 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tightest font-display text-gray-900 group-hover:text-indigo-600 transition-colors duration-500">
+                  <CountUp value={metric.value} suffix={metric.suffix} />
+                </h3>
+              </div>
+
+              <div className="space-y-2">
+                <span className="text-sm md:text-base font-bold text-gray-900 uppercase tracking-[0.2em] font-display">
+                  {metric.label}
+                </span>
+                <p className="text-xs md:text-sm text-gray-400 font-display font-light">
+                  {metric.subtext}
+                </p>
+              </div>
+
+              {/* Animated Underline */}
+              <motion.div 
+                initial={{ width: 0 }}
+                whileInView={{ width: '40px' }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5 + (i * 0.2) }}
+                className="h-1 bg-indigo-600 mt-8 rounded-full"
+              />
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
-
-export default Metrics;
+    </section>
+  )
+}

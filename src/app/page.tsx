@@ -51,7 +51,6 @@ export default function Home() {
         {/* <ImageContentSection imgSrc='/Teja-Davuluri.jpeg' /> */}
         {/* <ImageContentSectionInvert bgClass="bg-transparent" /> */}
 
-        <Quote />
 
         <FinalCTASection />
       </main>
