@@ -36,7 +36,7 @@ export default function ServicesPage() {
         />
       </svg>
       <Header />
-      <main>
+      <main className="pt-16 sm:pt-20">
         <ServicesDetailed />
         
         <TechStack />

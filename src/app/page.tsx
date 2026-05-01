@@ -37,7 +37,7 @@ export default function Home() {
         />
       </svg>
       <Header />
-      <main>
+      <main className="pt-16 sm:pt-20">
         <Hero />
 
         <Quote />

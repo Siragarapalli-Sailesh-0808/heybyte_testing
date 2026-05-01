@@ -40,8 +40,8 @@ export default function ContactPage() {
 
       <Header />
 
-      <main className="flex-grow">
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 lg:pt-48 pb-24 lg:pb-32">
+      <main className="flex-grow pt-16 sm:pt-20">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-28 pb-24 lg:pb-32">
           {/* New Clean Layout: Integrated Contact Experience */}
           <ContactForm />
 

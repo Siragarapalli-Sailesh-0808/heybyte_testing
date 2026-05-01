@@ -8,17 +8,17 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm py-5">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <nav className="relative z-50 flex justify-between">
-          <div className="flex items-center md:gap-x-12">
+    <header className="fixed left-0 right-0 top-0 z-[100] border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-xl">
+      <div className="relative mx-auto h-16 max-w-7xl px-4 sm:h-20 sm:px-6 lg:px-8">
+        <nav className="relative z-50 flex h-full items-center justify-between">
+          <div className="flex min-w-0 items-center md:gap-x-12">
             <Link href="/" aria-label="Home">
               <Image
                 src="/Logo.png"
                 alt="Company Logo"
                 width={200}
                 height={80}
-                className="h-10 w-auto object-contain"
+                className="h-8 w-auto object-contain sm:h-10"
                 priority
               />
             </Link>
@@ -49,12 +49,10 @@ export default function Header() {
               </Link>
             </div>
           </div>
-          <div className="flex items-center gap-x-2 md:gap-x-6">
-
-
-            <div className="-mr-1 md:hidden">
+          <div className="flex shrink-0 items-center gap-x-2 md:gap-x-6">
+            <div className="md:hidden">
               <button
-                className="relative z-10 flex h-8 w-8 items-center justify-center"
+                className="relative z-10 flex h-10 w-10 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100"
                 aria-label="Toggle Navigation"
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -81,8 +79,8 @@ export default function Header() {
         </nav>
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4">
-            <div className="rounded-lg bg-white p-4 shadow-lg ring-1 ring-slate-900/5">
+          <div className="absolute left-4 right-4 top-[calc(100%+0.75rem)] z-50 md:hidden">
+            <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5">
               <nav className="flex flex-col gap-2">
                 <a
                   className="inline-block rounded-lg px-3 py-2 text-base font-semibold text-black hover:bg-slate-100"
