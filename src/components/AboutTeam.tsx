@@ -30,14 +30,14 @@ const teamMembers: TeamMember[] = [
   {
     id: 3,
     name: "Krishna Manohar",
-    role: "Backend Developer",
+    role: "Backend Engineer",
     image: "/Krishna-Manohar.png",
     quote: "Scalability and security aren't just features; they're the foundation. I focus on building robust systems that grow with our clients' ambitions."
   },
   {
     id: 4,
     name: "Sailesh Siragarapalli",
-    role: "Frontend Developer",
+    role: "Frontend Engineer",
     image: "/Sailesh.png",
     quote: "Crafting digital experiences that feel alive. I'm passionate about performance, accessibility, and pixel-perfect implementation."
   }

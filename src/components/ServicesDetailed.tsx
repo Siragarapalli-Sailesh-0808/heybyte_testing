@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 
 interface Service {
   title: string
@@ -10,6 +9,7 @@ interface Service {
   features: string[]
   technologies: string[]
   image: string
+  mobileImage?: string
   accentColor: string
 }
 
@@ -25,7 +25,8 @@ const services: Service[] = [
       'Disaster recovery planning'
     ],
     technologies: ['AWS', 'Azure', 'Docker', 'Terraform', 'Kubernetes'],
-    image: '/cloud-service.png',
+    image: '/cloud-service-web.jpg',
+    mobileImage: '/cloud-service-mobile-web.jpg',
     accentColor: 'text-blue-600'
   },
   {
@@ -39,7 +40,8 @@ const services: Service[] = [
       'App Store optimization'
     ],
     technologies: ['React Native', 'Swift', 'Kotlin', 'Flutter', 'Firebase'],
-    image: '/mobile-service.png',
+    image: '/mobile-service-web.jpg',
+    mobileImage: '/mobile-service-mobile-web.jpg',
     accentColor: 'text-indigo-600'
   },
   {
@@ -53,7 +55,8 @@ const services: Service[] = [
       'API development and integration'
     ],
     technologies: ['React', 'Next.js', 'Node.js', 'GraphQL', 'PostgreSQL'],
-    image: '/web-service.png',
+    image: '/web-service-web.jpg',
+    mobileImage: '/web-service-mobile-web.jpg',
     accentColor: 'text-purple-600'
   },
   {
@@ -67,7 +70,8 @@ const services: Service[] = [
       'Performance optimization'
     ],
     technologies: ['Jenkins', 'GitHub Actions', 'Ansible', 'Prometheus', 'Grafana'],
-    image: '/devops-service.png',
+    image: '/devops-service-web.jpg',
+    mobileImage: '/devops-service-mobile-web.jpg',
     accentColor: 'text-pink-600'
   },
   {
@@ -81,7 +85,8 @@ const services: Service[] = [
       'Team training and mentorship'
     ],
     technologies: ['Agile', 'Scrum', 'TOGAF', 'Security Audit', 'Scalability'],
-    image: '/consulting-service.png',
+    image: '/consulting-service-web.jpg',
+    mobileImage: '/consulting-service-mobile-web.jpg',
     accentColor: 'text-rose-600'
   }
 ]
@@ -89,42 +94,41 @@ const services: Service[] = [
 const ServiceCard = ({ service, index }: { service: Service; index: number }) => {
   return (
     <div 
-      className="sticky top-20 md:top-32 w-full mb-12 md:mb-20 last:mb-0 px-4 sm:px-6 lg:px-8 group"
+      className="sticky top-20 md:top-24 w-full mb-12 md:mb-20 last:mb-0 px-4 sm:px-6 lg:px-8 group"
       style={{ zIndex: index + 1 }}
     >
-      <div className="bg-white rounded-[2.5rem] md:rounded-[3rem] border border-gray-100 shadow-[0_30px_70px_rgba(0,0,0,0.04)] overflow-hidden min-h-[580px] md:min-h-[650px] flex flex-col md:flex-row transition-all duration-700 hover:shadow-[0_50px_100px_rgba(0,0,0,0.08)]">
+      <div className="bg-white rounded-[2.5rem] md:rounded-[3rem] border border-gray-100 shadow-[0_30px_70px_rgba(0,0,0,0.04)] overflow-hidden min-h-[580px] md:min-h-[560px] md:h-[calc(100vh-170px)] md:max-h-[680px] flex flex-col md:flex-row transition-all duration-700 hover:shadow-[0_50px_100px_rgba(0,0,0,0.08)]">
         {/* Visual Panel - Premium Image */}
-        <div className="h-[250px] md:h-auto md:flex-1 relative bg-gray-50 overflow-hidden order-1 md:order-2">
-          <Image
-            src={service.image}
-            alt={service.title}
-            fill
-            className="object-cover scale-105 group-hover:scale-110 transition-transform duration-[2s] ease-out"
-            priority={index < 2}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent md:bg-gradient-to-r md:from-white/20 md:via-transparent md:to-transparent pointer-events-none" />
+        <div className="h-[250px] md:h-auto md:flex-1 relative bg-white overflow-hidden order-1 md:order-2">
+          <picture>
+            <source media="(max-width: 767px)" srcSet={service.mobileImage ?? service.image} />
+            <img
+              src={service.image}
+              alt={service.title}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              loading={index < 2 ? 'eager' : 'lazy'}
+            />
+          </picture>
+          <div className="absolute inset-0 bg-gradient-to-t from-white/15 via-transparent to-transparent md:bg-gradient-to-r md:from-white/10 md:via-transparent md:to-transparent pointer-events-none" />
         </div>
 
         {/* Content Area */}
-        <div className="flex-[1.2] p-8 sm:p-12 md:p-16 lg:p-24 flex flex-col justify-center bg-white order-2 md:order-1">
+        <div className="flex-[1.2] p-8 sm:p-12 md:p-12 lg:p-16 flex flex-col justify-center bg-white order-2 md:order-1">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] text-indigo-600 mb-6 md:mb-8 block font-display">
-              Solution 0{index + 1}
-            </span>
-            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 md:mb-8 font-display tracking-tightest leading-tight">
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 lg:mb-8 font-display tracking-tightest leading-tight">
               {service.title}
             </h3>
             
-            <p className="text-base md:text-xl text-gray-500 mb-8 md:mb-12 leading-relaxed max-w-2xl font-display font-light">
+              <p className="text-base md:text-lg lg:text-xl text-gray-500 mb-8 lg:mb-12 leading-relaxed max-w-2xl font-display font-light">
               {service.description}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 md:gap-y-4 mb-8 md:mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 lg:gap-y-4 mb-8 lg:mb-12">
               {service.features.map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="mt-2 w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
@@ -133,7 +137,7 @@ const ServiceCard = ({ service, index }: { service: Service; index: number }) =>
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-10 md:mb-12">
+              <div className="flex flex-wrap gap-2 mb-10 lg:mb-12">
               {service.technologies.map((tech, i) => (
                 <span key={i} className="px-3 md:px-5 py-1.5 md:py-2 bg-gray-50 text-gray-500 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider font-display border border-gray-100/50 group-hover:border-indigo-100 transition-colors">
                   {tech}

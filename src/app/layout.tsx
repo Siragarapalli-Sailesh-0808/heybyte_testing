@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: "HeyByte | App Development, Website Development & Software Solutions",
   description:
     "HeyByte is a leading software development company offering mobile app development, website design, web applications, eCommerce solutions, custom software, and digital transformation services.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/icon.png",
+  },
   keywords: [
     "HeyByte",
     "software development company",
